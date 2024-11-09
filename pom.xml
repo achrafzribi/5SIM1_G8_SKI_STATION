@@ -16,6 +16,13 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+                <sonar.projectKey>5SIM1_G8_SKI_STATION</sonar.projectKey>
+                <sonar.host.url>http://192.168.121.83:9000</sonar.host.url>
+                <sonar.login>admin</sonar.login>
+                <sonar.password>sirineHabachi1.</sonar.password> <!-- Il est recommandé d'utiliser un token plutôt qu'un mot de passe -->
+                <sonar.java.binaries>target/classes</sonar.java.binaries> <!-- Spécifier le répertoire des classes compilées -->
+
+
 	</properties>
 	<dependencies>
 		<dependency>
@@ -68,7 +75,13 @@
 						</exclude>
 					</excludes>
 				</configuration>
+
 			</plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
+            </plugin>
 		</plugins>
 	</build>
 
