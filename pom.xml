@@ -60,6 +60,27 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		 <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Ajout de Mockito Core -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>3.12.4</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Ajout de Mockito pour JUnit 5 -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <version>3.12.4</version>
+        <scope>test</scope>
+    </dependency>
 	</dependencies>
  <distributionManagement>
  <repository>
