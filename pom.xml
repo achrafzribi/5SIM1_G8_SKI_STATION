@@ -18,10 +18,6 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-		<!-- SonarQube properties -->
-		<sonar.projectKey>gestion-station-ski</sonar.projectKey>
-		<sonar.host.url>http://localhost:9000</sonar.host.url>
-		<sonar.login>squ_faca856262d4ccc3578279a438cd620410174e30</sonar.login>
 	</properties>
 	
 	<dependencies>
