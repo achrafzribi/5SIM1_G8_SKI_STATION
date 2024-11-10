@@ -15,7 +15,7 @@ services:
    gestion-station-ski:
      depends_on:
        - mysqldb
-     image: sirine55/gestionski-1.0:1.0
+     image: sirine55/gestionski:1.0.0  # Correct image tag
      restart: on-failure
      ports:
        - "8089:8089"
