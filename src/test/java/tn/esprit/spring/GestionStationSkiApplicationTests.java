@@ -80,7 +80,7 @@ class RegistrationServicesImplTest {
     void testAddRegistrationAndAssignToSkierAndCourse_IndividualCourse() {
         when(skierRepository.findById(1L)).thenReturn(Optional.of(skier));
         when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
-        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(anyInt(), anyLong(), anyLong())).thenReturn(0);
+        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(anyInt(), anyLong(), anyLong())).thenReturn((long) 0);
         when(registrationRepository.save(registration)).thenReturn(registration);
 
         Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, 1L, 1L);
@@ -98,8 +98,8 @@ class RegistrationServicesImplTest {
 
         when(skierRepository.findById(1L)).thenReturn(Optional.of(skier));
         when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
-        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(anyInt(), anyLong(), anyLong())).thenReturn(0);
-        when(registrationRepository.countByCourseAndNumWeek(course, registration.getNumWeek())).thenReturn(5);
+        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(anyInt(), anyLong(), anyLong())).thenReturn((long) 0);
+        when(registrationRepository.countByCourseAndNumWeek(course, registration.getNumWeek())).thenReturn((long) 5);
         when(registrationRepository.save(registration)).thenReturn(registration);
 
         Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, 1L, 1L);
@@ -117,8 +117,8 @@ class RegistrationServicesImplTest {
 
         when(skierRepository.findById(1L)).thenReturn(Optional.of(skier));
         when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
-        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(anyInt(), anyLong(), anyLong())).thenReturn(0);
-        when(registrationRepository.countByCourseAndNumWeek(course, registration.getNumWeek())).thenReturn(6); // Full course
+        when(registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(anyInt(), anyLong(), anyLong())).thenReturn((long) 0);
+        when(registrationRepository.countByCourseAndNumWeek(course, registration.getNumWeek())).thenReturn((long) 6); // Full course
 
         Registration result = registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, 1L, 1L);
 
