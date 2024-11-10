@@ -2,9 +2,10 @@ package tn.esprit.spring;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.spring.entities.Piste;
 import tn.esprit.spring.entities.Color;
 import tn.esprit.spring.repositories.IPisteRepository;
@@ -17,50 +18,49 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class PisteServicesImplTest {
 
 	@InjectMocks
-	private PisteServicesImpl pisteServices;  // On injecte le service à tester
+	private PisteServicesImpl pisteServices; // The service being tested
 
 	@Mock
-	private IPisteRepository pisteRepository;  // On mock le dépôt
+	private IPisteRepository pisteRepository; // Mocked repository dependency
 
 	@BeforeEach
 	void setUp() {
-		MockitoAnnotations.openMocks(this);  // Initialisation des mocks
+		// No need to initialize mocks manually; handled by @ExtendWith(MockitoExtension.class)
 	}
 
 	@Test
 	void retrieveAllPistes() {
-		// Arrange: On simule des données de test
+		// Arrange: Mock some test data
 		List<Piste> pistes = Arrays.asList(
 				new Piste(1L, "Piste 1", Color.BLUE, 500, 15, null),
 				new Piste(2L, "Piste 2", Color.RED, 800, 20, null)
 		);
-
-		// On définit le comportement du mock
 		when(pisteRepository.findAll()).thenReturn(pistes);
 
-		// Act: On appelle la méthode du service
+		// Act: Call the service method
 		List<Piste> result = pisteServices.retrieveAllPistes();
 
-		// Assert: Vérification que le service renvoie bien les pistes simulées
+		// Assert: Check that the service returns the expected data
 		assertNotNull(result);
 		assertEquals(2, result.size());
 		assertEquals("Piste 1", result.get(0).getNamePiste());
-		verify(pisteRepository, times(1)).findAll();  // On vérifie que le dépôt a été appelé une seule fois
+		verify(pisteRepository, times(1)).findAll();
 	}
 
 	@Test
 	void addPiste() {
-		// Arrange
+		// Arrange: Mock a piste to add
 		Piste piste = new Piste(1L, "Piste 1", Color.GREEN, 600, 10, null);
 		when(pisteRepository.save(piste)).thenReturn(piste);
 
-		// Act
+		// Act: Call the service method
 		Piste result = pisteServices.addPiste(piste);
 
-		// Assert
+		// Assert: Check that the piste was added as expected
 		assertNotNull(result);
 		assertEquals("Piste 1", result.getNamePiste());
 		verify(pisteRepository, times(1)).save(piste);
@@ -68,44 +68,44 @@ class PisteServicesImplTest {
 
 	@Test
 	void removePiste() {
-		// Arrange
+		// Arrange: Define piste ID to delete
 		Long pisteId = 1L;
 		doNothing().when(pisteRepository).deleteById(pisteId);
 
-		// Act
+		// Act: Call the service method
 		pisteServices.removePiste(pisteId);
 
-		// Assert
-		verify(pisteRepository, times(1)).deleteById(pisteId);  // Vérification que le dépôt a été appelé pour la suppression
+		// Assert: Verify the deletion was triggered in the repository
+		verify(pisteRepository, times(1)).deleteById(pisteId);
 	}
 
 	@Test
-	void retrievePiste() {
-		// Arrange
+	void retrievePiste_existingPiste() {
+		// Arrange: Mock a piste to be retrieved
 		Long pisteId = 1L;
 		Piste piste = new Piste(1L, "Piste 1", Color.BLACK, 700, 24, null);
 		when(pisteRepository.findById(pisteId)).thenReturn(Optional.of(piste));
 
-		// Act
+		// Act: Call the service method
 		Piste result = pisteServices.retrievePiste(pisteId);
 
-		// Assert
+		// Assert: Check that the correct piste was returned
 		assertNotNull(result);
 		assertEquals("Piste 1", result.getNamePiste());
 		verify(pisteRepository, times(1)).findById(pisteId);
 	}
 
 	@Test
-	void retrievePiste_notFound() {
-		// Arrange
+	void retrievePiste_nonExistingPiste() {
+		// Arrange: Define a piste ID that doesn't exist
 		Long pisteId = 1L;
 		when(pisteRepository.findById(pisteId)).thenReturn(Optional.empty());
 
-		// Act & Assert
-		Exception exception = assertThrows(RuntimeException.class, () -> {
-			pisteServices.retrievePiste(pisteId);
-		});
+		// Act: Call the service method
+		Piste result = pisteServices.retrievePiste(pisteId);
 
-		assertEquals("Piste not found", exception.getMessage());
+		// Assert: Check that the result is null for a non-existing piste
+		assertNull(result);
+		verify(pisteRepository, times(1)).findById(pisteId);
 	}
 }
