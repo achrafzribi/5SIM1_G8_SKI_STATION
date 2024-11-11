@@ -2,9 +2,10 @@ package tn.esprit.spring;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.spring.entities.Subscription;
 import tn.esprit.spring.entities.TypeSubscription;
 import tn.esprit.spring.repositories.ISubscriptionRepository;
@@ -19,8 +20,8 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-class GestionStationSkiApplicationTests {
+@ExtendWith(MockitoExtension.class)
+class SubscriptionServicesImplTest {
 
     @InjectMocks
     private SubscriptionServicesImpl subscriptionServices; // Service being tested
@@ -30,11 +31,7 @@ class GestionStationSkiApplicationTests {
 
     @BeforeEach
     void setUp() {
-        // No manual initialization required; handled by Spring Boot Test
-    }
-
-    @Test
-    void contextLoads() {
+        // No manual mock initialization required; handled by @ExtendWith(MockitoExtension.class)
     }
 
     @Test
