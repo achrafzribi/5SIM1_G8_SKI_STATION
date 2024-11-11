@@ -108,7 +108,7 @@ class SubscriptionServicesImplTest {
         // Act
         Set<Subscription> result = subscriptionServices.getSubscriptionByType(type);
 
-        // Assert
+        // 
         assertNotNull(result);
         assertEquals(2, result.size());
         verify(subscriptionRepository, times(1)).findByTypeSubOrderByStartDateAsc(type);
