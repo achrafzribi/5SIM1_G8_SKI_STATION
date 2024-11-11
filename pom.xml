@@ -54,7 +54,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-<distributionManagement>
+	
+	<distributionManagement>
 		<repository>
 			<id>deploymentRepo</id>
 			<name>Nexus Repository</name>
