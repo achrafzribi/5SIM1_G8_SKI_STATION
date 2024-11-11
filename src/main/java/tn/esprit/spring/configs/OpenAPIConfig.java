@@ -3,7 +3,7 @@ package tn.esprit.spring.configs;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,19 +24,20 @@ public class OpenAPIConfig {
     }
 
     public Contact contactAPI() {
-        return new Contact().name("TEAM ASI II")
-                .email("ons.bensalah@esprit.tn")
-                .url("https://www.linkedin.com/in/ons-ben-salah-24b73494/");
+        Contact contact = new Contact().name("Mohamed Loukil")
+                .email("loukil.mohamed@esprit.tn")
+                .url("https://www.linkedin.com/in/mohamed-loukil/");
+        return contact;
     }
 
-
     @Bean
-    public GroupedOpenApi productPublicApi() {
+    public GroupedOpenApi blocPublicApi() {
         return GroupedOpenApi.builder()
-                .group("SKI STATION Management API")
+                .group("Test Management API")
                 .pathsToMatch("/**/**")
                 .pathsToExclude("**")
                 .build();
+
     }
 
 
