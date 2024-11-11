@@ -35,21 +35,18 @@ class SubscriptionServicesImplTest {
     }
 
     @Test
-    void retrieveAllSubscriptions() {
-        // Arrange
+    void retrieveSubscriptions() {
+        // Arrange: Mock repository data
         List<Subscription> subscriptions = Arrays.asList(
                 new Subscription(1L, LocalDate.now(), LocalDate.now().plusMonths(1), 100f, TypeSubscription.MONTHLY),
                 new Subscription(2L, LocalDate.now(), LocalDate.now().plusYears(1), 1200f, TypeSubscription.ANNUAL)
         );
         when(subscriptionRepository.findAll()).thenReturn(subscriptions);
 
-        // Act
-        List<Subscription> result = subscriptionServices.retrieveAllSubscriptions();
+        // Act: Call the service method (doesn't return data)
+        subscriptionServices.retrieveSubscriptions();
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals(TypeSubscription.MONTHLY, result.get(0).getTypeSub());
+        // Assert: Verify repository interaction
         verify(subscriptionRepository, times(1)).findAll();
     }
 

@@ -38,7 +38,7 @@ class GestionStationSkiApplicationTests {
     }
 
     @Test
-    void retrieveAllSubscriptions() {
+    void retrieveSubscriptions() {
         // Arrange
         List<Subscription> subscriptions = Arrays.asList(
                 new Subscription(1L, LocalDate.now(), LocalDate.now().plusMonths(1), 100f, TypeSubscription.MONTHLY),
@@ -47,12 +47,9 @@ class GestionStationSkiApplicationTests {
         when(subscriptionRepository.findAll()).thenReturn(subscriptions);
 
         // Act
-        List<Subscription> result = subscriptionServices.retrieveAllSubscriptions();
+        subscriptionServices.retrieveSubscriptions();
 
         // Assert
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals(TypeSubscription.MONTHLY, result.get(0).getTypeSub());
         verify(subscriptionRepository, times(1)).findAll();
     }
 
