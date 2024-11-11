@@ -41,22 +41,19 @@ class SubscriptionServicesImplTest {
                 new Subscription(1L, LocalDate.now(), LocalDate.now().plusMonths(1), 100f, TypeSubscription.MONTHLY),
                 new Subscription(2L, LocalDate.now(), LocalDate.now().plusYears(1), 1200f, TypeSubscription.ANNUAL)
         );
-        when(subscriptionRepository.findAll()).thenReturn(subscriptions);
+        when(subscriptionRepository.findDistinctOrderByEndDateAsc()).thenReturn(subscriptions);
 
         // Act: Call the service method
-        List<Subscription> result = subscriptionServices.retrieveSubscriptions();
+        subscriptionServices.retrieveSubscriptions();
 
-        // Assert: Verify data and repository interaction
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals(TypeSubscription.MONTHLY, result.get(0).getTypeSub());
-        verify(subscriptionRepository, times(1)).findAll();
+        // Assert: Verify repository interaction
+        verify(subscriptionRepository, times(1)).findDistinctOrderByEndDateAsc();
     }
 
     @Test
     void addSubscription() {
         // Arrange
-        Subscription subscription = new Subscription(1L, LocalDate.now(), LocalDate.now().plusMonths(6), 600f, TypeSubscription.SEMESTRIEL);
+        Subscription subscription = new Subscription(1L, LocalDate.now(), null, 600f, TypeSubscription.SEMESTRIEL);
         when(subscriptionRepository.save(subscription)).thenReturn(subscription);
 
         // Act
@@ -65,6 +62,7 @@ class SubscriptionServicesImplTest {
         // Assert
         assertNotNull(result);
         assertEquals(TypeSubscription.SEMESTRIEL, result.getTypeSub());
+        assertEquals(subscription.getStartDate().plusMonths(6), result.getEndDate());
         verify(subscriptionRepository, times(1)).save(subscription);
     }
 
