@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
 
 
 @SpringBootTest
+@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 class GestionStationSkiApplicationTests {
 
