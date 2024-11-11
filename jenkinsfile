@@ -1,0 +1,69 @@
+pipeline {
+    agent any 
+
+
+    stages { 
+       
+         stage('verif code source from Git') {
+            steps {
+                
+                     git branch: 'iskanderguedri_5sim1_G8', url: 'https://github.com/achrafzribi/5SIM1_G8_SKI_STATION.git'
+                
+                
+            }
+        }
+           stage('Build') {
+            steps {
+                sh "mvn clean install"
+                
+            }
+        }
+                stage('Test JUnit/Mockito') {
+            steps {
+                sh "mvn test"
+            }
+            
+        }
+        stage('SonarQube Scanner') {
+            steps {
+               
+            withSonarQubeEnv('sonarqube') {
+                 script{
+                  
+                    sh "mvn sonar:sonar"
+                }
+            }
+        }}
+
+ stage('nexus') {
+            steps {
+               
+              sh "mvn deploy"
+
+            }
+            
+        }
+    stage('Build Docker Image ') {
+            steps {
+                script {
+                    sh 'ls -l'
+                    sh 'docker build -t iskanderguedri/ski .'
+            }
+        }
+         }
+          stage('Deploy Docker Image') {
+            steps {
+                script {
+                 withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                    sh 'docker login -u iskanderguedri -p ${dockerhubpwd}'
+                 }  
+                 sh 'docker push iskanderguedri/ski'
+                }
+            }
+        }
+        stage('Deploy with Docker Compose') {
+            steps {
+                sh 'docker-compose up -d'
+        }
+        }
+    }}
