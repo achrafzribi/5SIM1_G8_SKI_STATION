@@ -43,10 +43,13 @@ class SubscriptionServicesImplTest {
         );
         when(subscriptionRepository.findAll()).thenReturn(subscriptions);
 
-        // Act: Call the service method (doesn't return data)
-        subscriptionServices.retrieveSubscriptions();
+        // Act: Call the service method
+        List<Subscription> result = subscriptionServices.retrieveSubscriptions();
 
-        // Assert: Verify repository interaction
+        // Assert: Verify data and repository interaction
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(TypeSubscription.MONTHLY, result.get(0).getTypeSub());
         verify(subscriptionRepository, times(1)).findAll();
     }
 
@@ -62,6 +65,21 @@ class SubscriptionServicesImplTest {
         // Assert
         assertNotNull(result);
         assertEquals(TypeSubscription.SEMESTRIEL, result.getTypeSub());
+        verify(subscriptionRepository, times(1)).save(subscription);
+    }
+
+    @Test
+    void updateSubscription() {
+        // Arrange
+        Subscription subscription = new Subscription(1L, LocalDate.now(), LocalDate.now().plusMonths(6), 700f, TypeSubscription.SEMESTRIEL);
+        when(subscriptionRepository.save(subscription)).thenReturn(subscription);
+
+        // Act
+        Subscription result = subscriptionServices.updateSubscription(subscription);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(700f, result.getPrice());
         verify(subscriptionRepository, times(1)).save(subscription);
     }
 
@@ -108,7 +126,7 @@ class SubscriptionServicesImplTest {
         // Act
         Set<Subscription> result = subscriptionServices.getSubscriptionByType(type);
 
-        // 
+        // Assert
         assertNotNull(result);
         assertEquals(2, result.size());
         verify(subscriptionRepository, times(1)).findByTypeSubOrderByStartDateAsc(type);
